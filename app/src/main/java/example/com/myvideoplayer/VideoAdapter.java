@@ -1,5 +1,6 @@
 package example.com.myvideoplayer;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -39,12 +40,21 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
         videoHolder.videoTitle.setText(vidObject.title);
     }
 
-    public class VideoHolder extends RecyclerView.ViewHolder {
+    public class VideoHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public TextView videoTitle;
         public VideoHolder(@NonNull View itemView) {
             super(itemView);
             videoTitle = (TextView)itemView.findViewById(R.id.videoTitle);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            VideoObject videoObj = mVideoObjects.get(getLayoutPosition());
+            Intent intent = new Intent(v.getContext(), VideoActivity.class);
+            intent.putExtra(MainActivity.VIDEO_URL_EXTRA, videoObj.url);
+            v.getContext().startActivity(intent);
         }
     }
 }
